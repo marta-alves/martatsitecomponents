@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utility Header</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #5d5d5d; /* Cinza Escuro (Prata) */
+            --light-color: #f7f7f7;
+            --accent-color: #b0997f; /* Toque Dourado/Pedra */
+        }
+        /* Estilos obrigatórios para usar Material Icons */
+        .material-icons-outlined {
+            font-family: 'Material Icons Outlined';
+            font-weight: normal;
+            font-style: normal;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        
+        .utility-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--light-color);
+            border-bottom: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .brand-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        /* Estilo dos Ícones */
+        .icon-group a {
+            color: var(--primary-color);
+            font-size: 1.25em;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .icon-group a:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="utility-header">
+        <a href="#" class="brand-name">
+    <img src="https://marta-alves.github.io/martatsitecomponents/images/marta_logo_canva(1).png" alt="Marta T. Logo" style="height: 30px; vertical-align: middle;">
+</a>
+        <div class="icon-group">
+            <a href="URL_DO_CARRINHO" title="Carrinho de Compras">
+                <span class="material-icons-outlined">shopping_cart</span>
+            </a>
+            
+            <a href="URL_DA_PAGINA_LOGIN" title="Área de Cliente/Login">
+                <span class="material-icons-outlined">account_circle</span>
+            </a>
+
+            <a href="URL_DA_PAGINA_CONTACTOS" title="Contactos">
+                <span class="material-icons-outlined">email</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
