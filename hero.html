@@ -16,6 +16,14 @@
     object-fit: cover;
     transition: transform 0.5s ease;
 }
+      .item-wrapper {
+    position: relative; 
+    display: block; 
+    /* Esta linha é CRUCIAL: define a largura de toda a peça */
+    width: 150px; 
+    align-items: initial;
+    text-align: center;
+}
 
 .item-wrapper:hover .img-container img {
     transform: scale(1.15);
