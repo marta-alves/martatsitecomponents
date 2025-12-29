@@ -1,1 +1,663 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumière & Co. | Premium Jewelry</title>
+<!-- Google Fonts for Premium Typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+    /* --- CSS VARIABLES & RESET --- */
+    :root {
+        --primary-gold: #D4AF37;
+        --primary-silver: #C0C0C0;
+        --accent-orange: #FF8C00;
+        --accent-orange-hover: #e07b00;
+        --bg-nude: #f9f7f5;
+        --text-dark: #2c2c2c;
+        --text-light: #666666;
+        --white: #ffffff;
+        --shadow-soft: 0 10px 30px rgba(0,0,0,0.05);
+        --shadow-hover: 0 15px 40px rgba(255, 140, 0, 0.15); /* Orange glow */
+        --font-heading: 'Playfair Display', serif;
+        --font-body: 'Lato', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+        font-family: var(--font-body);
+        background-color: var(--bg-nude);
+        color: var(--text-dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: 0.3s ease; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* --- NAVIGATION --- */
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    }
+
+    .brand-logo {
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        letter-spacing: 1px;
+    }
+    .brand-logo span { color: var(--accent-orange); }
+
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        position: relative;
+    }
+    
+    /* Hover Underline Effect */
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: var(--accent-orange);
+        transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent-orange); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* --- HERO SLIDER --- */
+    .hero {
+        position: relative;
+        height: 85vh;
+        width: 100%;
+        overflow: hidden;
+        margin-top: 60px; /* Offset fixed header */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        z-index: 1;
+    }
+
+    .slide.active { opacity: 1; z-index: 2; }
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7); /* Darken slightly for text readability */
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        color: var(--white);
+        max-width: 800px;
+        padding: 0 20px;
+        animation: fadeInUp 1.2s ease-out;
+    }
+
+    .hero-content h1 {
+        font-family: var(--font-heading);
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        font-weight: 300;
+    }
+
+    /* Premium Button Style */
+    .btn-premium {
+        display: inline-block;
+        background-color: var(--accent-orange);
+        color: var(--white);
+        padding: 12px 35px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+    }
+
+    .btn-premium:hover {
+        background-color: var(--accent-orange-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 140, 0, 0.6);
+    }
+
+    /* Slider Thumbnails */
+    .slider-thumbs {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        gap: 15px;
+        background: rgba(255,255,255,0.2);
+        padding: 10px;
+        border-radius: 50px;
+        backdrop-filter: blur(5px);
+    }
+
+    .thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%; /* Circle thumbs */
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+        opacity: 0.7;
+    }
+
+    .thumb.active {
+        border-color: var(--accent-orange);
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* --- PRODUCTS SECTION --- */
+    .products-section {
+        padding: 5rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .section-title .divider {
+        width: 60px;
+        height: 3px;
+        background: var(--accent-orange);
+        margin: 0 auto;
+    }
+
+    /* Grid Layout */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2.5rem;
+    }
+
+    /* Product Card */
+    .product-card {
+        background: var(--white);
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-image-wrapper {
+        width: 100%;
+        height: 320px; /* Tall elegant aspect ratio */
+        overflow: hidden;
+        position: relative;
+        background: #f0f0f0;
+    }
+
+    .card-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    /* Hover Effects: Zoom & Glow */
+    .product-card:hover .card-image-wrapper img {
+        transform: scale(1.1);
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-hover);
+        border-color: rgba(255, 140, 0, 0.3);
+    }
+
+    .card-details {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .card-title {
+        font-family: var(--font-heading);
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+    }
+
+    .card-desc {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-bottom: 1rem;
+        font-style: italic;
+    }
+
+    .card-price {
+        display: block;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary-gold);
+        margin-bottom: 1rem;
+    }
+
+    .btn-buy {
+        display: inline-block;
+        padding: 10px 25px;
+        border: 1px solid var(--text-dark);
+        background: transparent;
+        color: var(--text-dark);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+
+    .product-card:hover .btn-buy {
+        background: var(--accent-orange);
+        border-color: var(--accent-orange);
+        color: var(--white);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+        background-color: #1a1a1a;
+        color: #ddd;
+        padding: 4rem 5% 2rem;
+        margin-top: 4rem;
+        text-align: center;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-logo {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        color: var(--white);
+    }
+
+    .footer-links a {
+        margin: 0 10px;
+        font-size: 0.9rem;
+        color: #999;
+    }
+    .footer-links a:hover { color: var(--accent-orange); }
+
+    .copyright {
+        font-size: 0.8rem;
+        color: #555;
+        border-top: 1px solid #333;
+        padding-top: 2rem;
+        width: 100%;
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+        .navbar { padding: 1rem; flex-direction: column; gap: 10px; }
+        .hero-content h1 { font-size: 2.2rem; }
+        .slider-thumbs { bottom: 15px; gap: 8px; }
+        .thumb { width: 45px; height: 45px; }
+        .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .card-image-wrapper { height: 200px; }
+        .btn-buy { padding: 8px 15px; font-size: 0.7rem; }
+    }
+    @media (max-width: 480px) {
+        .product-grid { grid-template-columns: 1fr; }
+        .hero { height: 70vh; }
+    }
+</style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="brand-logo">LUMIÈRE <span>& CO.</span></div>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#collection">Collection</a>
+            <a href="https://ecwid.com" target="_blank">Shop</a>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <header id="hero" class="hero">
+        <!-- Slides -->
+        <div class="slide active">
+            <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2075&auto=format&fit=crop" alt="Luxury Gold">
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=2070&auto=format&fit=crop" alt="Silver Elegance">
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop" alt="Diamond Shine">
+        </div>
+
+        <!-- Overlay Content -->
+        <div class="hero-content">
+            <h1>Timeless Elegance &<br>Modern Luxury</h1>
+            <p>Handcrafted pieces designed to tell your unique story.</p>
+            <a href="#collection" class="btn-premium">Explore Collection</a>
+        </div>
+
+        <!-- Mini Thumbnails -->
+        <div class="slider-thumbs">
+            <div class="thumb active" onclick="goToSlide(0)">
+                <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=200&auto=format&fit=crop" alt="Thumb 1">
+            </div>
+            <div class="thumb" onclick="goToSlide(1)">
+                <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=200&auto=format&fit=crop" alt="Thumb 2">
+            </div>
+            <div class="thumb" onclick="goToSlide(2)">
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=200&auto=format&fit=crop" alt="Thumb 3">
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Collection -->
+    <section id="collection" class="products-section">
+        <div class="section-title">
+            <h2>The Signature Collection</h2>
+            <div class="divider"></div>
+        </div>
+
+        <div class="product-grid" id="product-container">
+            <!-- Product Cards generated below by JS for clean code, or hardcoded here -->
+            
+            <!-- Card 1 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600" alt="Ring">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Ethereal Gold Ring</h3>
+                    <p class="card-desc">18k Gold with subtle finish</p>
+                    <span class="card-price">$299.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1599643478518-17488fbbcd75?auto=format&fit=crop&w=600" alt="Necklace">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Lunar Silver Pendant</h3>
+                    <p class="card-desc">Sterling Silver & Moonstone</p>
+                    <span class="card-price">$145.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1630019852942-f89202989a51?auto=format&fit=crop&w=600" alt="Earrings">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Sunrise Drops</h3>
+                    <p class="card-desc">Gold plated with Citrine</p>
+                    <span class="card-price">$89.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1602751584552-8ba731f6e1ef?auto=format&fit=crop&w=600" alt="Bracelet">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Minimalist Cuff</h3>
+                    <p class="card-desc">Brushed Silver finish</p>
+                    <span class="card-price">$120.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1589128773085-2b4194b69330?auto=format&fit=crop&w=600" alt="Diamond Ring">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Forever Diamond</h3>
+                    <p class="card-desc">Solitaire cut, White Gold</p>
+                    <span class="card-price">$899.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1590736969955-71cc94801759?auto=format&fit=crop&w=600" alt="Pearl">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Ocean Pearl Set</h3>
+                    <p class="card-desc">Freshwater pearls</p>
+                    <span class="card-price">$210.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=600" alt="Golden Chain">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Royal Chain</h3>
+                    <p class="card-desc">Thick braided Gold</p>
+                    <span class="card-price">$450.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600" alt="Gemstone Ring">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Emerald Envy</h3>
+                    <p class="card-desc">Vintage style setting</p>
+                    <span class="card-price">$340.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 9 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?auto=format&fit=crop&w=600" alt="Modern Ring">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Geo Stacker</h3>
+                    <p class="card-desc">Geometric shapes, set of 3</p>
+                    <span class="card-price">$75.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1596944924616-00311a6388a3?auto=format&fit=crop&w=600" alt="Watch">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Classic Timepiece</h3>
+                    <p class="card-desc">Rose Gold mesh band</p>
+                    <span class="card-price">$199.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 11 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1617038224538-287f3b9c7c25?auto=format&fit=crop&w=600" alt="Choker">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Velvet Choker</h3>
+                    <p class="card-desc">With gold charm detail</p>
+                    <span class="card-price">$45.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+            <!-- Card 12 -->
+            <div class="product-card">
+                <div class="card-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618403019842-3726c71a8952?auto=format&fit=crop&w=600" alt="Anklet">
+                </div>
+                <div class="card-details">
+                    <h3 class="card-title">Summer Anklet</h3>
+                    <p class="card-desc">Delicate chain with beads</p>
+                    <span class="card-price">$35.00</span>
+                    <a href="https://ecwid.com" class="btn-buy">Buy Now</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">LUMIÈRE <span>& CO.</span></div>
+            <div class="footer-links">
+                <a href="#hero">Home</a>
+                <a href="#collection">Collection</a>
+                <a href="#">Shipping</a>
+                <a href="#">Returns</a>
+                <a href="#">Contact</a>
+            </div>
+            <p style="font-size: 0.9rem; max-width: 500px;">
+                Premium handcrafted jewelry for the modern soul. Designed in Portugal, loved worldwide.
+            </p>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Lumière & Co. All Rights Reserved.
+        </div>
+    </footer>
+
+<script>
+    // --- SLIDER LOGIC ---
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const thumbs = document.querySelectorAll('.thumb');
+    const totalSlides = slides.length;
+    let slideInterval;
+
+    function goToSlide(index) {
+        // Reset Active Classes
+        slides.forEach(s => s.classList.remove('active'));
+        thumbs.forEach(t => t.classList.remove('active'));
+
+        // Set New Active Classes
+        slides[index].classList.add('active');
+        thumbs[index].classList.add('active');
+        
+        currentSlide = index;
+
+        // Reset Timer
+        clearInterval(slideInterval);
+        startSlideTimer();
+    }
+
+    function nextSlide() {
+        let nextIndex = (currentSlide + 1) % totalSlides;
+        goToSlide(nextIndex);
+    }
+
+    function startSlideTimer() {
+        slideInterval = setInterval(nextSlide, 5000); // Change every 5 seconds
+    }
+
+    // Initialize Slider
+    startSlideTimer();
+
+    // --- SMOOTH SCROLL (Enhanced for SPA feel) ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
